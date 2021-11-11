@@ -1,4 +1,4 @@
-package com.example.auth.model;
+package com.example.auth.config;
 
 import lombok.Getter;
 import lombok.ToString;
