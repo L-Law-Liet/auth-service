@@ -59,4 +59,8 @@ public class AppUser  implements UserDetails {
     public String getPassword() {
         return password;
     }
+
+    public Long getId() {
+        return id;
+    }
 }
