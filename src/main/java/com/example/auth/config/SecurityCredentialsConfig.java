@@ -1,5 +1,6 @@
 package com.example.auth.config;
 
+import com.google.common.collect.ImmutableList;
 import com.example.auth.config.JwtConfig;
 import com.example.auth.security.JwtUsernameAndPasswordAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -43,9 +47,11 @@ public class SecurityCredentialsConfig extends WebSecurityConfigurerAdapter {
 		    .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig))
 		.authorizeRequests()
 		    // allow all POST requests 
-		    .antMatchers(HttpMethod.POST, jwtConfig.getUri()).permitAll()
+				.antMatchers("/auth/**").permitAll()
+				.antMatchers("/user/**").permitAll()
 		    // any other requests must be authenticated
 		    .anyRequest().authenticated();
+		http.cors();
 	}
 	
 	// Spring has UserDetailsService interface, which can be overriden to provide our implementation for fetching user from database (or any other source).
@@ -65,4 +71,6 @@ public class SecurityCredentialsConfig extends WebSecurityConfigurerAdapter {
 	public BCryptPasswordEncoder passwordEncoder() {
 	    return new BCryptPasswordEncoder();
 	}
+
+
 }
